@@ -558,10 +558,6 @@ video {
   top: -32px;
 }
 
-.bottom-0 {
-  bottom: 0px;
-}
-
 .bottom-10 {
   bottom: 2.5rem;
 }
@@ -675,10 +671,6 @@ video {
 
 .h-\[1\.5px\] {
   height: 1.5px;
-}
-
-.h-\[130px\] {
-  height: 130px;
 }
 
 .h-\[15px\] {
@@ -7406,10 +7398,6 @@ video {
   color: rgb(255 255 255 / 0.95);
 }
 
-.text-opacity-100 {
-  --tw-text-opacity: 1;
-}
-
 .text-opacity-50 {
   --tw-text-opacity: 0.5;
 }
@@ -7432,6 +7420,10 @@ video {
 
 .opacity-50 {
   opacity: 0.5;
+}
+
+.opacity-75 {
+  opacity: 0.75;
 }
 
 .shadow {

@@ -9,7 +9,7 @@ import { useTransferState } from '../hooks/TransferStatusContext'
 
 function FilesContainer() {
 	const { serverIp, shareFiles, removeShare, checkShare, uploadProgress, abortUpload } = useBackend()
-
+	const MAX_FILES_BYTES_SIZE = 4294967296
 
 	const [selectedFiles, setSelectedFiles] = useState([])
 	const fileInput = useRef();
@@ -64,11 +64,16 @@ function FilesContainer() {
 	}, [isSharing]);
 
 	const handleShareFiles = async () => {
-		const uid = await shareFiles(selectedFiles)
-		if(uid) {
-			setShareLinkUid(uid)
-			setIsSharing(true)
+		if(totalFileSize <= MAX_FILES_BYTES_SIZE){
+			const uid = await shareFiles(selectedFiles)
+			if (uid) {
+				setShareLinkUid(uid)
+				setIsSharing(true)
+			}
+		} else {
+			alert("Max files size limit reached, upload less than 4.2GB at time")
 		}
+		
 	}
 
 	const handleCancelTransfer = async () => {
