@@ -1,0 +1,86 @@
+{
+  "name": "local-transfer",
+  "private": true,
+  "version": "1.0.0",
+  "main": "electron/main.js",
+  "author": "mignaway",
+  "scripts": {
+    "start": "concurrently \"cross-env BROWSER=none npm run serve-react\" \"wait-on tcp:127.0.0.1:3000 && npm run start-electron\"",
+    "dev": "concurrently \" npm run start-react\" \"wait-on tcp:127.0.0.1:3000 && npm run start-electron\"",
+    "start-react": "vite --host --port 3000",
+    "start-electron": "electron .",
+    "start-server": "node ./server/server.js",
+    "start-dev-server": "nodemon ./server/server.js",
+    "tailbuild": "tailwind build -i ./src/assets/css/tailwind.css -o ./src/assets/css/output.css",
+    "build": "vite build",
+    "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
+    "preview": "vite preview",
+    "serve-react": "serve -s electron/react -p 3000",
+    "stop": "node ./server/shutdown.js",
+    "dist:windows": "electron-builder --windows"
+  },
+  "build": {
+    "appId": "LocalTransferBeta",
+    "win": {
+      "target": [
+        "nsis"
+      ],
+      "icon": "src/icon.ico"
+    },
+    "asar": false,
+    "nsis": {
+      "oneClick": false,
+      "installerIcon": "src/icon.ico",
+      "uninstallerIcon": "src/icon.ico",
+      "uninstallDisplayName": "LocalTransferUninstaller",
+      "allowToChangeInstallationDirectory": true
+    },
+    "files": [
+      "dist/react/**/*",
+      "electron/**/*",
+      "server/**/*",
+      "!server/uploads/*"
+    ]
+  },
+  "homepage": "./",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "cross-env": "^7.0.3",
+    "electron-is-dev": "^2.0.0",
+    "express": "^4.19.2",
+    "ip": "^1.1.8",
+    "pkill": "^2.0.0",
+    "qrcode.react": "^3.1.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "socket.io": "^4.7.2",
+    "socket.io-client": "^4.7.2",
+    "tailwind-scrollbar-hide": "^1.1.7",
+    "tailwindcss-animate": "^1.0.7",
+    "express-zip": "^3.0.0",
+    "express-fileupload": "^1.4.1"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.15",
+    "@types/react-dom": "^18.2.7",
+    "@vitejs/plugin-basic-ssl": "^1.0.1",
+    "@vitejs/plugin-react": "^4.0.3",
+    "autoprefixer": "^10.4.16",
+    "axios": "^1.5.1",
+    "electron": "^27.0.0",
+    "electron-builder": "^24.6.4",
+    "eslint": "^8.45.0",
+    "eslint-plugin-react": "^7.33.2",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-react-refresh": "^0.4.3",
+    "express-fileupload": "^1.4.1",
+    "express-zip": "^3.0.0",
+    "nodemon": "^3.0.1",
+    "postcss": "^8.4.31",
+    "react-router-dom": "^6.16.0",
+    "serve": "^14.2.1",
+    "tailwindcss": "^3.3.3",
+    "vite": "^4.4.5",
+    "wait-on": "^7.2.0"
+  }
+}
