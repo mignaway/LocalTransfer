@@ -8,7 +8,7 @@ import { useBackend } from '../hooks/useBackend.js'
 import { useTransferState } from '../hooks/TransferStatusContext'
 
 function FilesContainer() {
-	const { serverIp, shareFiles, removeShare, checkShare, uploadProgress, abortUpload } = useBackend()
+	const {shareFiles, removeShare, checkShare, uploadProgress, abortUpload } = useBackend()
 	const MAX_FILES_BYTES_SIZE = 4294967296
 
 	const [selectedFiles, setSelectedFiles] = useState([])
@@ -18,6 +18,8 @@ function FilesContainer() {
 
 	const handleFileChange = (e) => {
 		if (e.target.files.length > 0) {
+			
+			// Update New Total Size & Files
 			const newTotalSize = Array.from(e.target.files).reduce(
 				(acc, file) => acc + file.size,
 				0
@@ -31,13 +33,28 @@ function FilesContainer() {
 	const handleDrop = (e) => {
 		e.preventDefault();
 		const files = e.dataTransfer.files;
+		// Reset Drag Over State
 		setIsDragOver(false)
+		// Update New Total Size
+		const newTotalSize = Array.from(files).reduce(
+				(acc, file) => acc + file.size,
+				0
+			);
+		setTotalFileSize((oldSize) => oldSize + newTotalSize);
+		// Upadte Files
 		setSelectedFiles(oldFiles => [...oldFiles, ...files])
 	};
 
 	const handleDragOver = (e) => {
+		setIsDragOver(true)
 		e.preventDefault();
 	};
+
+	const handleClearFiles = () => {
+		setTotalFileSize(0)	
+		setSelectedFiles([])
+
+	}
 
 	const [shareLinkUid, setShareLinkUid] = useState(null)
 	const { isSharing, setIsSharing } = useTransferState()
@@ -64,6 +81,7 @@ function FilesContainer() {
 	}, [isSharing]);
 
 	const handleShareFiles = async () => {
+		// Check uplaod size limit before sharing
 		if(totalFileSize <= MAX_FILES_BYTES_SIZE){
 			const uid = await shareFiles(selectedFiles)
 			if (uid) {
@@ -77,8 +95,10 @@ function FilesContainer() {
 	}
 
 	const handleCancelTransfer = async () => {
+		// Call backend to remove the transfer
 		const deleted = await removeShare(shareLinkUid)
 		if(deleted){
+			// Reset states
 			setShareLinkUid(null)
 			setIsSharing(false)
 		}
@@ -110,7 +130,10 @@ function FilesContainer() {
 					}
 				</div>
 			) : (
-				<div className="relative flex-1 border-[2px] flex flex-col rounded-[15px] p-6 gap-y-5 bg-gradient-to-b from-[#97E89A]/[1%] to-[#97E89A]/[1%] border-dashed border-[#97E89A] overflow-hidden items-center ">
+				<div className={`relative flex-1 border-[2px] flex flex-col rounded-[15px] p-6 gap-y-5 bg-gradient-to-b from-[#97E89A]/[1%] to-[#97E89A]/[1%] border-dashed border-[#97E89A] overflow-hidden items-center`}
+					onDrop={handleDrop}
+					onDragOver={handleDragOver}
+					onDragEnter={() => setIsDragOver(true)} onDragLeave={() => setIsDragOver(false)}>
 					<div className="flex flex-row justify-between gap-x-2 w-full">
 						<div className="main-text max-lg:text-sm flex flex-row gap-x-1 sticky top-0 flex-wrap">
 							<span className="opacity-50">Sending</span>
@@ -118,7 +141,7 @@ function FilesContainer() {
 							<span className="opacity-50">with a total size of</span>
 							<span className="font-medium">{bytesToSize(totalFileSize)}</span>
 						</div>
-						<span className="main-text text-sm text-white hover:text-red-500 transition duration-150 cursor-pointer whitespace-nowrap" onClick={() => setSelectedFiles([])}>Clear All</span>
+						<span className="main-text text-sm text-white hover:text-red-500 transition duration-150 cursor-pointer whitespace-nowrap" onClick={handleClearFiles}>Clear All</span>
 					</div>
 					{uploadProgress !== null && 
 							<div className="w-full h-[7px] bg-white bg-opacity-5 rounded-[100px] justify-start items-start inline-flex">
@@ -137,6 +160,20 @@ function FilesContainer() {
 								if (file) return <FileContainer file={file} key={i} />
 							})
 						}
+						{
+							isDragOver && 
+								<div className="pointer-events-none w-full h-full p-3 lg:p-5 cursor-pointer hover:bg-white/5 border-[2px] border-dashed border-white/10 line-clamp-2 transition rounded-[10px] justify-start items-center gap-x-4 flex" onClick={() => fileInput.current.click()}>
+										<svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+											<g opacity="0.50">
+												<path d="M25.0356 20.9565L34.5044 26.4796L30.4621 27.6353L33.3514 32.6403L30.9965 34L28.1071 28.9964L25.0845 31.9197L25.0356 20.9565ZM22.3162 11.4387H25.0356V14.1581H31.834C32.1946 14.1581 32.5405 14.3014 32.7955 14.5564C33.0505 14.8113 33.1937 15.1572 33.1937 15.5178V20.9565H30.4743V16.8775H16.8775V30.4743H22.3162V33.1937H15.5178C15.1572 33.1937 14.8113 33.0505 14.5564 32.7955C14.3014 32.5405 14.1581 32.1946 14.1581 31.834V25.0356H11.4387V22.3162H14.1581V15.5178C14.1581 15.1572 14.3014 14.8113 14.5564 14.5564C14.8113 14.3014 15.1572 14.1581 15.5178 14.1581H22.3162V11.4387ZM8.71937 22.3162V25.0356H6V22.3162H8.71937ZM8.71937 16.8775V19.5969H6V16.8775H8.71937ZM8.71937 11.4387V14.1581H6V11.4387H8.71937ZM8.71937 6V8.71937H6V6H8.71937ZM14.1581 6V8.71937H11.4387V6H14.1581ZM19.5969 6V8.71937H16.8775V6H19.5969ZM25.0356 6V8.71937H22.3162V6H25.0356Z" fill="white" />
+											</g>
+										</svg>
+
+									<span className="main-text text-medium opacity-50">Drop File</span>
+
+								</div>
+						}
+							
 					</div>
 					{ uploadProgress != null ? 
 							<div className="bottom-8 absolute" onClick={handleAbortUpload}><span className="main-text text-red-500 cursor-pointer whitespace-nowrap">Cancel Upload</span></div>
