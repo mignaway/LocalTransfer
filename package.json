@@ -17,7 +17,7 @@
     "preview": "vite preview",
     "serve-react": "serve -s electron/react -p 3000",
     "stop": "node ./server/shutdown.js",
-    "dist:windows": "electron-builder --windows"
+    "dist:windows": "npm run tailbuild && npm run build && electron-builder --windows"
   },
   "build": {
     "appId": "LocalTransferBeta",
