@@ -16,18 +16,27 @@ function FilesContainer() {
 	const [totalFileSize, setTotalFileSize] = useState(0);
 	const [isDragOver, setIsDragOver] = useState(false)
 
+	// AlLOW FILES REUPLOAD AND FIX:  important reset file input each upload
+	useEffect(()=>{
+		if (fileInput.current) {
+			fileInput.current.value = '';
+		}
+	},[selectedFiles])
+
 	const handleFileChange = (e) => {
 		if (e.target.files.length > 0) {
-			
 			// Update New Total Size & Files
-			const newTotalSize = Array.from(e.target.files).reduce(
+			updateFileSize(e.target.files)
+			setSelectedFiles((oldFiles) => [...oldFiles, ...e.target.files]);	
+		}
+	}
+
+	const updateFileSize = (files) => {
+		const newTotalSize = Array.from(files).reduce(
 				(acc, file) => acc + file.size,
 				0
 			);
-
-			setTotalFileSize((oldSize) => oldSize + newTotalSize);
-			setSelectedFiles((oldFiles) => [...oldFiles, ...e.target.files]);
-		}
+		setTotalFileSize((oldSize) => oldSize + newTotalSize);
 	}
 
 	const handleDrop = (e) => {
@@ -36,11 +45,7 @@ function FilesContainer() {
 		// Reset Drag Over State
 		setIsDragOver(false)
 		// Update New Total Size
-		const newTotalSize = Array.from(files).reduce(
-				(acc, file) => acc + file.size,
-				0
-			);
-		setTotalFileSize((oldSize) => oldSize + newTotalSize);
+		updateFileSize(files)
 		// Upadte Files
 		setSelectedFiles(oldFiles => [...oldFiles, ...files])
 	};
@@ -50,11 +55,26 @@ function FilesContainer() {
 		e.preventDefault();
 	};
 
-	const handleClearFiles = () => {
+	const handleClearFiles = (e) => {
 		setTotalFileSize(0)	
 		setSelectedFiles([])
-
+		e.preventDefault();
 	}
+
+	// Function to handle file removal
+	const handleRemoveFile = (index) => {
+		setSelectedFiles((prevFiles) => {
+			const updatedFiles = prevFiles.filter((_, i) => i !== index);
+			// Update the total file size
+			const removedFile = prevFiles[index];
+			if (removedFile) {
+				console.log(`Removing file: ${removedFile.name}, size: ${removedFile.size}`);
+				setTotalFileSize((prevTotalSize) => prevTotalSize - removedFile.size / 2);
+			}
+
+			return updatedFiles;
+		});	
+	};
 
 	const [shareLinkUid, setShareLinkUid] = useState(null)
 	const { isSharing, setIsSharing } = useTransferState()
@@ -157,7 +177,7 @@ function FilesContainer() {
 						</div>
 						{
 							selectedFiles.map((file, i) => {
-								if (file) return <FileContainer file={file} key={i} />
+								if (file) return <FileContainer file={file} key={i} handleRemoveFile={()=> handleRemoveFile(i)} />
 							})
 						}
 						{
