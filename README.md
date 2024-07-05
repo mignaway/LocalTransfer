@@ -19,7 +19,7 @@ LocalTransfer is an open-source desktop application designed to make file sharin
 - **Cross-Platform**: Compatible with all major operating systems, ensuring that you can share files regardless of the device you're using.
 - **Size Limits?**: More or less 4.2GB per transfer. I'm planning to improve this and increase the upload limit
 
-
+This application is currently in development. You might experience some minor bugs.
 
 ## Preview
 <!-- <img src="https://user-images.githubusercontent.com/40722616/176780491-6f7c7711-780f-4d96-bd2d-dc51fb7b5164.jpg" width="100%"> -->
