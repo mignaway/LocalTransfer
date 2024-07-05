@@ -11,7 +11,7 @@
     "start-electron": "electron .",
     "start-server": "node ./server/server.js",
     "start-dev-server": "nodemon ./server/server.js",
-    "tailbuild": "tailwind build -i ./src/assets/css/tailwind.css -o ./src/assets/css/output.css",
+    "tailbuild": "tailwind build -i ./src/assets/css/tailwind.css -o ./src/assets/css/output.css --minify",
     "build": "vite build",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
