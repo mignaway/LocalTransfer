@@ -17,7 +17,7 @@ LocalTransfer is an open-source desktop application designed to make file sharin
 - **Instant Access**: Instantly generate a link or QR code to share files with other devices. Simply open the link or scan the QR code on the receiving device to start the download—no installation required.
 - **User-Friendly**: A simple and intuitive interface that makes file sharing straightforward for everyone.
 - **Cross-Platform**: Compatible with all major operating systems, ensuring that you can share files regardless of the device you're using.
-- **Size Limits?**: More or less 4/5GB per transfer, otherwise you'll get a size limit error. I'm planning to improve this and increase the upload limit
+- **Size Limits?**: More or less 4.2GB per transfer. I'm planning to improve this and increase the upload limit
 
 
 
