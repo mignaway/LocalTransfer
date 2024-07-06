@@ -42,9 +42,9 @@ Then clone the project with these command line:<br><br>
 _(Windows)_
 ```bash
 # Clone this repository
-git clone https://github.com/mignaway/EpubReader
+git clone https://github.com/mignaway/LocalTransfer
 # Go into the repository
-cd EpubReader
+cd LocalTransfer
 # Install dependencies
 npm install
 # Run the app
