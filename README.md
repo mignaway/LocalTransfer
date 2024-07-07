@@ -36,7 +36,10 @@ This application is currently in development. You might experience some minor bu
 
 </details>
 
-## Testing
+## Only for Testing
+
+**Important:** If you're looking to download the latest executable release, you can click on the green download badge at the top or directly check the [Releases section](https://github.com/mignaway/LocalTransfer/releases) for more versions.
+
 To clone locally this project you'll need [Git](https://git-scm.com/) and [Node.js](https://nodejs.org/en/download/) installed on your computer.
 Then clone the project with these command line:<br><br>
 _(Windows)_
