@@ -18,14 +18,16 @@ function Sidebar() {
 							<SidebarElement icon={SendLogo} name="Send" color="white" active={isActive}/>
 						)}
 					</NavLink>
-					<NavLink to="History" style={{pointerEvents: 'none' }}>
+					{ /* FUTURE HISTORY FEATURE */ }
+					<NavLink to="History" style={{pointerEvents: 'none'}}>
 						{({isActive}) => (
 							<SidebarElement icon={HistoryLogo} name="History" color="white" active={isActive} disabled/>
 						)}
 					</NavLink>
 				</div>
 				<div className="flex flex-col justify-end gap-4 flex-1">
-					<NavLink to="Settings" style={{pointerEvents: 'none' }}>
+					{ /* FUTURE HISTORY FEATURE */ }
+					<NavLink to="Settings" style={{pointerEvents: 'none'}}>
 						{({isActive}) => (
 							<SidebarElement icon={SettingsLogo} name="Settings" color="white" active={isActive} disabled/>
 						)}
