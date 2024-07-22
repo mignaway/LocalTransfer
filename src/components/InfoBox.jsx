@@ -19,7 +19,7 @@ function InfoBox() {
                     <>
                         <QRCodeSVG value={`${serverIp}:3000/#/send`} width="75" height="75" fgColor="white" bgColor="rgba(0,0,0,0)" />
                         <div className="h-full flex flex-col place-content-between">
-                            <h2 className="main-text text-sm font-medium leading-3">Receive files from devices</h2>
+                            <h2 className="main-text text-sm font-medium leading-3">Send from other devices</h2>
                             <div className="w-full h-[1.5px] bg-white/5"></div>
                             <div className="flex flex-col gap-y-1">
                                 <h3 className="main-text text-[13px] text-white/50 font-medium leading-3">Scan QR or open this link:</h3>
